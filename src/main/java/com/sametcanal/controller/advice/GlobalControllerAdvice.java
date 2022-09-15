@@ -50,8 +50,8 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> nestedObjectExceptionHandling(DataIntegrityViolationException exceptions){
-        return new ResponseEntity<HumanResourceExceptionObject>(new HumanResourceExceptionObject("HRS-1001","Nested object exception", HttpStatus.BAD_REQUEST),HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> nestedObjectExceptionHandling(DataIntegrityViolationException exceptions) {
+        return new ResponseEntity<HumanResourceExceptionObject>(new HumanResourceExceptionObject("HRS-1001", "Nested object exception", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -60,7 +60,7 @@ public class GlobalControllerAdvice {
         for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        return new ResponseEntity<Object>( new HumanResourceExceptionObject("HRS-1002", errors, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<Object>(new HumanResourceExceptionObject("HRS-1002", errors, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
 }
