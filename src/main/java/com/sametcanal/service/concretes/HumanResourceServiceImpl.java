@@ -1,9 +1,10 @@
-package com.sametcanal.service;
+package com.sametcanal.service.concretes;
 
 import com.sametcanal.controller.request.HumanResourceRequest;
 import com.sametcanal.exception.HumanResourceException;
 import com.sametcanal.model.HumanResource;
 import com.sametcanal.repository.HumanResourceRepository;
+import com.sametcanal.service.abstracts.HumanResourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

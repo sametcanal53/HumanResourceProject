@@ -43,4 +43,13 @@ public class BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date date;
+
+    @Column(name = "role")
+    private Long roleId;
+
+    @ManyToOne()
+    @JoinColumn(name = "role",insertable = false,updatable = false)
+    private Role role;
+
+
 }

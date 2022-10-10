@@ -1,5 +1,6 @@
 package com.sametcanal.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "human_resources")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "role","roleId"})
 public class HumanResource extends BaseEntity{
 
     @Column(name = "human_resource_name")

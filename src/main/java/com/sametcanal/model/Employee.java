@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "employees")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","humanResource","humanResourceId"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","humanResource","humanResourceId","role","roleId"})
 public class Employee extends BaseEntity{
 
     @Column(name = "name")

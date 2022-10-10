@@ -1,8 +1,8 @@
 package com.sametcanal.security;
 
 import com.sametcanal.bean.PasswordEncoderBean;
-import com.sametcanal.security.jwt.filter.AuthenticationEntryPoint;
-import com.sametcanal.security.jwt.filter.RequestFilter;
+import com.sametcanal.security.filter.JwtRequestFilter;
+import com.sametcanal.security.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,18 +15,21 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity( prePostEnabled = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final UserDetailsService jwtUserDetailsService;
-    private final RequestFilter requestFilter;
+    private final JwtRequestFilter requestFilter;
     private final PasswordEncoderBean passwordEncoder;
+
 
     @Bean
     @Override
@@ -53,9 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/", "/api/v1/index", "/success", "/login","/swagger-ui/**","/v3/api-docs/**","/asm-swagger.html", "/api-docs/**", "/api-docs/swagger-config", "/asm-swagger").permitAll()
-                //.antMatchers("/api/v1/employees/**").permitAll()
-                .antMatchers("/authenticate", "/register").permitAll()
+                .antMatchers("/authenticate", "/register","/", "/api/v1/index", "/success", "/login","/swagger-ui/**","/v3/api-docs/**","/asm-swagger.html", "/api-docs/**", "/api-docs/swagger-config", "/asm-swagger").permitAll()
                 // .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest()
                 .authenticated()

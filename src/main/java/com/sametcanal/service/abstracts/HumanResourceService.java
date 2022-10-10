@@ -1,4 +1,4 @@
-package com.sametcanal.service;
+package com.sametcanal.service.abstracts;
 
 import com.sametcanal.controller.request.HumanResourceRequest;
 import com.sametcanal.model.HumanResource;

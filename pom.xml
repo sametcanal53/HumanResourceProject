@@ -104,6 +104,11 @@
                 <artifactId>spring-boot-configuration-processor</artifactId>
                 <optional>true</optional>
             </dependency>
+            <!-- Spring Security Config -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+            </dependency>
         </dependencies>
 
         <build>

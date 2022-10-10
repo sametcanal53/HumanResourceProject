@@ -2,7 +2,7 @@ package com.sametcanal.controller.api;
 
 import com.sametcanal.controller.request.HumanResourceRequest;
 import com.sametcanal.model.HumanResource;
-import com.sametcanal.service.HumanResourceService;
+import com.sametcanal.service.abstracts.HumanResourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/humanresource/")
+@RequestMapping("/api/humanresources/")
 @RequiredArgsConstructor
 public class HumanResourceController {
 
