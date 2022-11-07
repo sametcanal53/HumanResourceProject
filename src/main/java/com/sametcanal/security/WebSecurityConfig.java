@@ -1,8 +1,7 @@
 package com.sametcanal.security;
 
-import com.sametcanal.bean.PasswordEncoderBean;
-import com.sametcanal.security.filter.JwtRequestFilter;
-import com.sametcanal.security.repository.UserRepository;
+import com.sametcanal.business.utils.PasswordEncoderBean;
+import com.sametcanal.security.jwt.utils.JwtAuthenticationTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -27,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final UserDetailsService jwtUserDetailsService;
-    private final JwtRequestFilter requestFilter;
+    private final JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
     private final PasswordEncoderBean passwordEncoder;
 
 
@@ -56,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "/register","/", "/api/v1/index", "/success", "/login","/swagger-ui/**","/v3/api-docs/**","/asm-swagger.html", "/api-docs/**", "/api-docs/swagger-config", "/asm-swagger").permitAll()
+                .antMatchers("/api/auth/**", "/", "/api/v1/index", "/success", "/login","/swagger-ui/**","/v3/api-docs/**","/asm-swagger.html", "/api-docs/**", "/api-docs/swagger-config", "/asm-swagger").permitAll()
                 // .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest()
                 .authenticated()
@@ -68,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Add a filter to validate the tokens with every request
-        httpSecurity.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 
