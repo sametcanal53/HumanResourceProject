@@ -2,7 +2,7 @@ package com.sametcanal.security.jwt.business.concretes;
 
 
 import com.sametcanal.security.jwt.dataAccess.abstracts.UserRepository;
-import com.sametcanal.security.jwt.entities.concretes.User;
+import com.sametcanal.entitites.concretes.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

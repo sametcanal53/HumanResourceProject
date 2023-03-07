@@ -1,5 +1,6 @@
-package com.sametcanal.security.jwt.entities.concretes;
+package com.sametcanal.entitites.concretes;
 
+import com.sametcanal.security.jwt.entities.concretes.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
