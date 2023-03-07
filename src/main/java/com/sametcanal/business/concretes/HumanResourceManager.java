@@ -5,16 +5,14 @@ import com.sametcanal.business.requests.create.CreateHumanResourceRequest;
 import com.sametcanal.business.requests.update.UpdateHumanResourceRequest;
 import com.sametcanal.business.rules.EmployeeBusinessRules;
 import com.sametcanal.business.rules.HumanResourceBusinessRoles;
-import com.sametcanal.core.utilities.exception.HumanResourceException;
 import com.sametcanal.dataAccess.abstracts.EmployeeRepository;
 import com.sametcanal.entitites.concretes.Employee;
 import com.sametcanal.entitites.concretes.HumanResource;
 import com.sametcanal.dataAccess.abstracts.HumanResourceRepository;
 import com.sametcanal.business.abstracts.HumanResourceService;
-import lombok.AllArgsConstructor;
+import com.sametcanal.security.jwt.business.responses.JwtResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +20,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@AllArgsConstructor
 @Slf4j
 public class HumanResourceManager implements HumanResourceService {
+    @Autowired
     private HumanResourceRepository humanResourceRepository;
+    @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
     private HumanResourceBusinessRoles humanResourceBusinessRoles;
+    @Autowired
     private EmployeeBusinessRules employeeBusinessRules;
 
     @Override
@@ -84,10 +85,9 @@ public class HumanResourceManager implements HumanResourceService {
             employee.setDayOff(changeDayOff.getDayOff());
             log.info(employee.getName()+"'s day off has been changed to "+changeDayOff.getDayOff().name());
             this.employeeRepository.save(employee);
-        }else{
-            log.error("There is no such employee in human resources" +
-                    "\nDay off cannot be changed");
-            throw new HumanResourceException("HRP-2003", "There is no such employee in human resources. Day off cannot be changed", HttpStatus.BAD_REQUEST);
+        }
+        else{
+            this.humanResourceBusinessRoles.checkIfEmployeeAndHumanResourceMatch();
         }
 
         return ResponseEntity.ok().body(employee.getName()+"'s day off has been changed to "+changeDayOff.getDayOff().name());
