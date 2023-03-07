@@ -1,8 +1,7 @@
 package com.sametcanal.webApi.advice;
 
-import com.sametcanal.exception.HumanResourceException;
-import com.sametcanal.exception.HumanResourceExceptionObject;
-import com.sametcanal.webApi.advice.ErrorResponse;
+import com.sametcanal.core.utilities.exception.HumanResourceException;
+import com.sametcanal.core.utilities.exception.HumanResourceExceptionObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -39,9 +38,10 @@ public class GlobalControllerAdvice {
         responseHeaders.add(RETURN_MESSAGE_HEADER, errorMessage);
 
         ErrorResponse responseBody = ErrorResponse.builder()
-                .errorType(e.getClass().getName())
+                .errorType(e.getClass().getSimpleName())
                 .errorCode(errorCode)
                 .errorMessage(errorMessage)
+                .httpStatus(e.getHttpStatus())
                 .build();
 
         return ResponseEntity

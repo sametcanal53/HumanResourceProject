@@ -1,5 +1,6 @@
 package com.sametcanal.business.abstracts;
 
+import com.sametcanal.business.requests.ChangeDayOff;
 import com.sametcanal.business.requests.create.CreateHumanResourceRequest;
 import com.sametcanal.business.requests.update.UpdateHumanResourceRequest;
 import com.sametcanal.entitites.concretes.HumanResource;
@@ -21,4 +22,7 @@ public interface HumanResourceService {
 
     Boolean deleteHumanResource(Long id);
 
+    // Employee
+    ResponseEntity<?> updateEmployeeDayOff(ChangeDayOff changeDayOff);
+    
 }

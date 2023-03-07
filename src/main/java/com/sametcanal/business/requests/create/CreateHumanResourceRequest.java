@@ -1,14 +1,11 @@
 package com.sametcanal.business.requests.create;
 
+import com.sametcanal.business.requests.base.HumanResourceRequest;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class CreateHumanResourceRequest {
-    private String humanResourceName;
+public class CreateHumanResourceRequest extends HumanResourceRequest {
+
 }
