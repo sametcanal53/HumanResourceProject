@@ -2,10 +2,12 @@ package com.sametcanal.business.concretes;
 
 import com.sametcanal.business.requests.create.CreateEmployeeRequest;
 import com.sametcanal.business.requests.update.UpdateEmployeeRequest;
+import com.sametcanal.business.rules.EmployeeBusinessRules;
 import com.sametcanal.core.utilities.exception.HumanResourceException;
 import com.sametcanal.entitites.concretes.Employee;
 import com.sametcanal.dataAccess.abstracts.EmployeeRepository;
 import com.sametcanal.business.abstracts.EmployeeService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,10 +18,11 @@ import java.util.List;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class EmployeeManager implements EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
+    private EmployeeBusinessRules employeeBusinessRules;
 
     @Override
     public List<Employee> getEmployees() {
@@ -29,12 +32,9 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public ResponseEntity<Employee> getEmployeeById(Long id) {
-        if (!employeeRepository.existsById(id)) {
-            log.error("Employee Not Found! ");
-            throw new HumanResourceException("HRP-2001", "Employee Not Found", HttpStatus.NOT_FOUND);
-        }
+        this.employeeBusinessRules.checkIfEmployeeExists(id);
         log.info("Employee Id : " + id);
-        return ResponseEntity.ok(this.employeeRepository.findById(id).orElse(null));
+        return ResponseEntity.ok().body(this.employeeRepository.findById(id).orElse(null));
     }
 
     @Override
@@ -52,10 +52,7 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public ResponseEntity<Employee> updateEmployee(UpdateEmployeeRequest updateEmployeeRequest){
-        if (!employeeRepository.existsById(updateEmployeeRequest.getId())) {
-            log.error("Employee Not Found! ");
-            throw new HumanResourceException("HRP-2001", "Employee Not Found", HttpStatus.NOT_FOUND);
-        }
+        this.employeeBusinessRules.checkIfEmployeeExists(updateEmployeeRequest.getId());
         Employee updateEmployee = employeeRepository.findById(updateEmployeeRequest.getId()).orElse(null);
         updateEmployee.setName(updateEmployeeRequest.getName());
         updateEmployee.setSalary(updateEmployeeRequest.getSalary());
@@ -63,15 +60,12 @@ public class EmployeeManager implements EmployeeService {
         updateEmployee.setHumanResourceId(updateEmployeeRequest.getHumanResourceId());
         log.info("Employee was successfully updated.");
         this.employeeRepository.save(updateEmployee);
-        return ResponseEntity.ok(updateEmployee);
+        return ResponseEntity.ok().body(updateEmployee);
     }
 
     @Override
     public Boolean deleteEmployee(Long id) {
-        if (!employeeRepository.existsById(id)) {
-            log.error("Employee Not Found! ");
-            throw new HumanResourceException("HRP-2001", "Employee Not Found", HttpStatus.NOT_FOUND);
-        }
+        this.employeeBusinessRules.checkIfEmployeeExists(id);
         log.info("Employee was successfully deleted.");
         this.employeeRepository.deleteById(id);
         return true;

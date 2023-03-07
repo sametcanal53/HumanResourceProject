@@ -3,12 +3,15 @@ package com.sametcanal.business.concretes;
 import com.sametcanal.business.requests.ChangeDayOff;
 import com.sametcanal.business.requests.create.CreateHumanResourceRequest;
 import com.sametcanal.business.requests.update.UpdateHumanResourceRequest;
+import com.sametcanal.business.rules.EmployeeBusinessRules;
+import com.sametcanal.business.rules.HumanResourceBusinessRoles;
 import com.sametcanal.core.utilities.exception.HumanResourceException;
 import com.sametcanal.dataAccess.abstracts.EmployeeRepository;
 import com.sametcanal.entitites.concretes.Employee;
 import com.sametcanal.entitites.concretes.HumanResource;
 import com.sametcanal.dataAccess.abstracts.HumanResourceRepository;
 import com.sametcanal.business.abstracts.HumanResourceService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +22,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@AllArgsConstructor
 @Slf4j
 public class HumanResourceManager implements HumanResourceService {
-
-    @Autowired
-    HumanResourceRepository humanResourceRepository;
-    @Autowired
-    EmployeeRepository employeeRepository;
+    private HumanResourceRepository humanResourceRepository;
+    private EmployeeRepository employeeRepository;
+    private HumanResourceBusinessRoles humanResourceBusinessRoles;
+    private EmployeeBusinessRules employeeBusinessRules;
 
     @Override
     public List<HumanResource> getHumanResources() {
@@ -35,12 +38,10 @@ public class HumanResourceManager implements HumanResourceService {
 
     @Override
     public ResponseEntity<HumanResource> getHumanResourceById(Long id) {
-        if (!humanResourceRepository.existsById(id)) {
-            log.error("Human Resource Not Found! ");
-            throw new HumanResourceException("HRP-2002", "Human Resource Not Found", HttpStatus.NOT_FOUND);
-        }
+        this.humanResourceBusinessRoles.checkIfHumanResourceExists(id);
+
         log.info("Human Resource Id : " + id);
-        return ResponseEntity.ok(this.humanResourceRepository.findById(id).orElse(null));
+        return ResponseEntity.ok().body(this.humanResourceRepository.findById(id).orElse(null));
     }
 
     @Override
@@ -55,38 +56,26 @@ public class HumanResourceManager implements HumanResourceService {
 
     @Override
     public ResponseEntity<HumanResource> updateHumanResource(UpdateHumanResourceRequest updateHumanResourceRequest) {
-        if (!humanResourceRepository.existsById(updateHumanResourceRequest.getId())) {
-            log.error("Human Resource Not Found! ");
-            throw new HumanResourceException("HRP-2002", "Human Resource Not Found", HttpStatus.NOT_FOUND);
-        }
+        this.humanResourceBusinessRoles.checkIfHumanResourceExists(updateHumanResourceRequest.getId());
         HumanResource updateHumanResource = humanResourceRepository.findById(updateHumanResourceRequest.getId()).orElse(null);
         updateHumanResource.setHumanResourceName(updateHumanResourceRequest.getHumanResourceName());
         log.info("Human Resource was successfully updated.");
         this.humanResourceRepository.save(updateHumanResource);
-        return ResponseEntity.ok(updateHumanResource);
+        return ResponseEntity.ok().body(updateHumanResource);
     }
 
     @Override
     public Boolean deleteHumanResource(Long id) {
-        if (!humanResourceRepository.existsById(id)) {
-            log.error("Human Resource Not Found! ");
-            throw new HumanResourceException("HRP-2002", "Human Resource Not Found", HttpStatus.NOT_FOUND);
-        }
+        this.humanResourceBusinessRoles.checkIfHumanResourceExists(id);
         log.info("Human Resource was successfully deleted.");
         this.humanResourceRepository.deleteById(id);
         return true;
     }
 
     @Override
-    public ResponseEntity<?> updateEmployeeDayOff(ChangeDayOff changeDayOff) {
-        if (!employeeRepository.existsById(changeDayOff.getEmployeeId())) {
-            log.error("Employee Not Found! ");
-            throw new HumanResourceException("HRP-2001", "Employee Not Found", HttpStatus.NOT_FOUND);
-        }
-        if (!humanResourceRepository.existsById(changeDayOff.getHumanResourceId())) {
-            log.error("Human Resource Not Found! ");
-            throw new HumanResourceException("HRP-2002", "Human Resource Not Found", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<?> changeEmployeeDayOff(ChangeDayOff changeDayOff) {
+        this.employeeBusinessRules.checkIfEmployeeExists(changeDayOff.getEmployeeId());
+        this.humanResourceBusinessRoles.checkIfHumanResourceExists(changeDayOff.getHumanResourceId());
 
         Employee employee = this.employeeRepository.findById(changeDayOff.getEmployeeId()).orElse(null);
         HumanResource humanResource = this.humanResourceRepository.findById(changeDayOff.getHumanResourceId()).orElse(null);

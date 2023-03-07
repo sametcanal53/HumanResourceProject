@@ -23,6 +23,6 @@ public interface HumanResourceService {
     Boolean deleteHumanResource(Long id);
 
     // Employee
-    ResponseEntity<?> updateEmployeeDayOff(ChangeDayOff changeDayOff);
+    ResponseEntity<?> changeEmployeeDayOff(ChangeDayOff changeDayOff);
     
 }
