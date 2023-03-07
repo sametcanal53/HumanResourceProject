@@ -52,11 +52,13 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<?> nestedObjectExceptionHandling(DataIntegrityViolationException exceptions) {
+        log.error("Global Controller Advice - Data Integrity Violantion Exception");
         return new ResponseEntity<HumanResourceExceptionObject>(new HumanResourceExceptionObject("HRS-1001", "Nested object exception", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException exceptions) {
+        log.error("Global Controller Advice - Method Argument Not Valid Exception");
         Map<String, String> errors = new HashMap<String, String>();
         for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());

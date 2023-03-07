@@ -48,8 +48,8 @@ public class HumanResourceController {
     }
 
 
-    @PostMapping("/changeDayOff")
-    public ResponseEntity<?> updateEmployeeDayOff(@RequestBody ChangeDayOff changeDayOff) {
-        return this.humanResourceService.updateEmployeeDayOff(changeDayOff);
+    @PostMapping("/changeEmployeeDayOff")
+    public ResponseEntity<?> changeEmployeeDayOff(@RequestBody ChangeDayOff changeDayOff) {
+        return this.humanResourceService.changeEmployeeDayOff(changeDayOff);
     }
 }
