@@ -11,7 +11,13 @@ import org.springframework.http.HttpStatus;
 public class HumanResourceException extends RuntimeException {
 
     private String errorCode;
-    private String errorMessage;
+    private Object errorMessage;
     private HttpStatus httpStatus;
+
+    HumanResourceException(String errorCode,String errorMessage,HttpStatus httpStatus){
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
+        this.httpStatus = httpStatus;
+    }
 
 }

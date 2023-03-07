@@ -1,7 +1,7 @@
 package com.sametcanal.webApi.advice;
 
 import com.sametcanal.core.utilities.exception.HumanResourceException;
-import com.sametcanal.core.utilities.exception.HumanResourceExceptionObject;
+import com.sametcanal.core.utilities.exception.HumanResourceExceptionConstant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -29,7 +29,7 @@ public class GlobalControllerAdvice {
     public ResponseEntity<Object> handle(HumanResourceException e) {
         log.error(e.getMessage(), e);
 
-        String errorMessage = e.getErrorMessage();
+        String errorMessage = (String) e.getErrorMessage();
         String errorCode = e.getErrorCode();
 
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -51,19 +51,19 @@ public class GlobalControllerAdvice {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> nestedObjectExceptionHandling(DataIntegrityViolationException exceptions) {
+    public ResponseEntity<HumanResourceException> nestedObjectExceptionHandling(DataIntegrityViolationException exceptions) {
         log.error("Global Controller Advice - Data Integrity Violantion Exception");
-        return new ResponseEntity<HumanResourceExceptionObject>(new HumanResourceExceptionObject("HRS-1001", "Nested object exception", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<HumanResourceException>(HumanResourceExceptionConstant.NESTED_OBJECT_EXCEPTION, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException exceptions) {
+    public Object handleValidationExceptions(MethodArgumentNotValidException exceptions) {
         log.error("Global Controller Advice - Method Argument Not Valid Exception");
-        Map<String, String> errors = new HashMap<String, String>();
-        for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
+        Map<String, String> errors = new HashMap<>();
+       for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
-        return new ResponseEntity<Object>(new HumanResourceExceptionObject("HRS-1002", errors, HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
+        return new HumanResourceException("HRP-1002", errors ,HttpStatus.BAD_REQUEST).getErrorMessage();
     }
 
 }
