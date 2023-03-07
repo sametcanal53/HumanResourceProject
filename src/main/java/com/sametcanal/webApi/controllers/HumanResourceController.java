@@ -49,6 +49,7 @@ public class HumanResourceController {
 
 
     @PostMapping("/changeEmployeeDayOff")
+    @PreAuthorize("hasAnyRole('HUMAN_RESOURCE','ADMIN')")
     public ResponseEntity<?> changeEmployeeDayOff(@RequestBody ChangeDayOff changeDayOff) {
         return this.humanResourceService.changeEmployeeDayOff(changeDayOff);
     }
