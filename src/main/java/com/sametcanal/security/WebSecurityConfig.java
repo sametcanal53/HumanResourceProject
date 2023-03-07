@@ -1,6 +1,6 @@
 package com.sametcanal.security;
 
-import com.sametcanal.business.utils.PasswordEncoderBean;
+import com.sametcanal.core.utilities.bean.PasswordEncoderBean;
 import com.sametcanal.security.jwt.utils.JwtAuthenticationTokenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
