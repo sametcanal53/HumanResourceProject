@@ -41,6 +41,7 @@ public class BaseEntity {
     private String updateBy;
     @Column(name = "update_date")
     @LastModifiedDate
+    @JsonIgnore
     private Date updateDate;
 
     @Column(name = "system_auto_date")
