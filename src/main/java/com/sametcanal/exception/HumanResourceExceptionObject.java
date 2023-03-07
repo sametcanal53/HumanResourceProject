@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class HumanResourceExceptionObject {
+public class HumanResourceExceptionObject extends RuntimeException{
     private String errorCode;
     private Object errorMessage;
     private HttpStatus httpStatus;
