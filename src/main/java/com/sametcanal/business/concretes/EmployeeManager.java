@@ -3,14 +3,11 @@ package com.sametcanal.business.concretes;
 import com.sametcanal.business.requests.create.CreateEmployeeRequest;
 import com.sametcanal.business.requests.update.UpdateEmployeeRequest;
 import com.sametcanal.business.rules.EmployeeBusinessRules;
-import com.sametcanal.core.utilities.exception.HumanResourceException;
 import com.sametcanal.entitites.concretes.Employee;
 import com.sametcanal.dataAccess.abstracts.EmployeeRepository;
 import com.sametcanal.business.abstracts.EmployeeService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +15,11 @@ import java.util.List;
 
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EmployeeManager implements EmployeeService {
 
-    private EmployeeRepository employeeRepository;
-    private EmployeeBusinessRules employeeBusinessRules;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeBusinessRules employeeBusinessRules;
 
     @Override
     public List<Employee> getEmployees() {

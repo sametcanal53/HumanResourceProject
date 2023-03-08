@@ -5,30 +5,26 @@ import com.sametcanal.business.requests.create.CreateHumanResourceRequest;
 import com.sametcanal.business.requests.update.UpdateHumanResourceRequest;
 import com.sametcanal.business.rules.EmployeeBusinessRules;
 import com.sametcanal.business.rules.HumanResourceBusinessRoles;
-import com.sametcanal.core.utilities.exception.HumanResourceException;
 import com.sametcanal.dataAccess.abstracts.EmployeeRepository;
 import com.sametcanal.entitites.concretes.Employee;
 import com.sametcanal.entitites.concretes.HumanResource;
 import com.sametcanal.dataAccess.abstracts.HumanResourceRepository;
 import com.sametcanal.business.abstracts.HumanResourceService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
-@AllArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class HumanResourceManager implements HumanResourceService {
-    private HumanResourceRepository humanResourceRepository;
-    private EmployeeRepository employeeRepository;
-    private HumanResourceBusinessRoles humanResourceBusinessRoles;
-    private EmployeeBusinessRules employeeBusinessRules;
+    private final HumanResourceRepository humanResourceRepository;
+    private final EmployeeRepository employeeRepository;
+    private final HumanResourceBusinessRoles humanResourceBusinessRoles;
+    private final EmployeeBusinessRules employeeBusinessRules;
 
     @Override
     public List<HumanResource> getHumanResources() {
@@ -80,16 +76,8 @@ public class HumanResourceManager implements HumanResourceService {
         Employee employee = this.employeeRepository.findById(changeDayOff.getEmployeeId()).orElse(null);
         HumanResource humanResource = this.humanResourceRepository.findById(changeDayOff.getHumanResourceId()).orElse(null);
 
-        if(Objects.equals(employee.getHumanResourceId(), humanResource.getId())){
-            employee.setDayOff(changeDayOff.getDayOff());
-            log.info(employee.getName()+"'s day off has been changed to "+changeDayOff.getDayOff().name());
-            this.employeeRepository.save(employee);
-        }else{
-            log.error("There is no such employee in human resources" +
-                    "\nDay off cannot be changed");
-            throw new HumanResourceException("HRP-2003", "There is no such employee in human resources. Day off cannot be changed", HttpStatus.BAD_REQUEST);
-        }
-
+        this.humanResourceBusinessRoles.checkIfEmployeeAndHumanResourceMatch(humanResource,employee,changeDayOff);
+        this.employeeRepository.save(employee);
         return ResponseEntity.ok().body(employee.getName()+"'s day off has been changed to "+changeDayOff.getDayOff().name());
     }
 }

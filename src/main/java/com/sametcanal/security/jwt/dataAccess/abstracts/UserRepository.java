@@ -1,6 +1,6 @@
 package com.sametcanal.security.jwt.dataAccess.abstracts;
 
-import com.sametcanal.security.jwt.entities.concretes.User;
+import com.sametcanal.entitites.concretes.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
