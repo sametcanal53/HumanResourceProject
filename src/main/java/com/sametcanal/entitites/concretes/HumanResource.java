@@ -1,7 +1,6 @@
 package com.sametcanal.entitites.concretes;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.sametcanal.entitites.concretes.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

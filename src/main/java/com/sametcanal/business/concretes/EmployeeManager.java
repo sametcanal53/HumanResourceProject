@@ -6,10 +6,8 @@ import com.sametcanal.business.rules.EmployeeBusinessRules;
 import com.sametcanal.entitites.concretes.Employee;
 import com.sametcanal.dataAccess.abstracts.EmployeeRepository;
 import com.sametcanal.business.abstracts.EmployeeService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +15,11 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class EmployeeManager implements EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
-    @Autowired
-    private EmployeeBusinessRules employeeBusinessRules;
+    private final EmployeeRepository employeeRepository;
+    private final EmployeeBusinessRules employeeBusinessRules;
 
     @Override
     public List<Employee> getEmployees() {

@@ -2,6 +2,7 @@ package com.sametcanal.webApi.controllers;
 
 import com.sametcanal.business.rules.UserBusinessRules;
 import com.sametcanal.core.utilities.exception.HumanResourceExceptionConstant;
+import com.sametcanal.entitites.concretes.User;
 import com.sametcanal.security.jwt.business.concretes.UserDetail;
 import com.sametcanal.security.jwt.business.requests.SignInRequest;
 import com.sametcanal.security.jwt.business.requests.SignUpRequest;
@@ -10,9 +11,8 @@ import com.sametcanal.security.jwt.dataAccess.abstracts.RoleRepository;
 import com.sametcanal.security.jwt.dataAccess.abstracts.UserRepository;
 import com.sametcanal.security.jwt.entities.abstracts.ERole;
 import com.sametcanal.security.jwt.entities.concretes.Role;
-import com.sametcanal.entitites.concretes.User;
 import com.sametcanal.security.jwt.utils.JwtTokenUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,19 +31,14 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthenticationController {
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder encoder;
-    @Autowired
-    private JwtTokenUtil jwtUtils;
-    @Autowired
-    private UserBusinessRules userBusinessRules;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder encoder;
+    private final JwtTokenUtil jwtUtils;
+    private final UserBusinessRules userBusinessRules;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody SignInRequest signInRequest) {
@@ -75,10 +70,15 @@ public class AuthenticationController {
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
+        user.setRoles(roleConfig(signUpRequest.getRole()));
+        userRepository.save(user);
 
-        strRoles.forEach(role -> {
+        return ResponseEntity.ok().body(user);
+    }
+
+    public Set<Role> roleConfig(Set<String> inputRoles){
+        Set<Role> roles = new HashSet<>();
+        inputRoles.forEach(role -> {
             switch (role) {
                 case "admin" -> {
                     Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
@@ -97,10 +97,7 @@ public class AuthenticationController {
                 }
             }
         });
-
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return ResponseEntity.ok().body(user);
+        return roles;
     }
+
 }

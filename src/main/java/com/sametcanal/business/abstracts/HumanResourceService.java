@@ -22,7 +22,7 @@ public interface HumanResourceService {
 
     Boolean deleteHumanResource(Long id);
 
-    // Employee
+    // Employee Management
     ResponseEntity<?> changeEmployeeDayOff(ChangeDayOff changeDayOff);
     
 }

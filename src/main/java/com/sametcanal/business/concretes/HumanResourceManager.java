@@ -10,26 +10,21 @@ import com.sametcanal.entitites.concretes.Employee;
 import com.sametcanal.entitites.concretes.HumanResource;
 import com.sametcanal.dataAccess.abstracts.HumanResourceRepository;
 import com.sametcanal.business.abstracts.HumanResourceService;
-import com.sametcanal.security.jwt.business.responses.JwtResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class HumanResourceManager implements HumanResourceService {
-    @Autowired
-    private HumanResourceRepository humanResourceRepository;
-    @Autowired
-    private EmployeeRepository employeeRepository;
-    @Autowired
-    private HumanResourceBusinessRoles humanResourceBusinessRoles;
-    @Autowired
-    private EmployeeBusinessRules employeeBusinessRules;
+    private final HumanResourceRepository humanResourceRepository;
+    private final EmployeeRepository employeeRepository;
+    private final HumanResourceBusinessRoles humanResourceBusinessRoles;
+    private final EmployeeBusinessRules employeeBusinessRules;
 
     @Override
     public List<HumanResource> getHumanResources() {
@@ -81,15 +76,8 @@ public class HumanResourceManager implements HumanResourceService {
         Employee employee = this.employeeRepository.findById(changeDayOff.getEmployeeId()).orElse(null);
         HumanResource humanResource = this.humanResourceRepository.findById(changeDayOff.getHumanResourceId()).orElse(null);
 
-        if(Objects.equals(employee.getHumanResourceId(), humanResource.getId())){
-            employee.setDayOff(changeDayOff.getDayOff());
-            log.info(employee.getName()+"'s day off has been changed to "+changeDayOff.getDayOff().name());
-            this.employeeRepository.save(employee);
-        }
-        else{
-            this.humanResourceBusinessRoles.checkIfEmployeeAndHumanResourceMatch();
-        }
-
+        this.humanResourceBusinessRoles.checkIfEmployeeAndHumanResourceMatch(humanResource,employee,changeDayOff);
+        this.employeeRepository.save(employee);
         return ResponseEntity.ok().body(employee.getName()+"'s day off has been changed to "+changeDayOff.getDayOff().name());
     }
 }
