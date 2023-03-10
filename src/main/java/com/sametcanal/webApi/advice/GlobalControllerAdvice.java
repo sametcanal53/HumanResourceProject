@@ -41,7 +41,6 @@ public class GlobalControllerAdvice {
                 .errorType(e.getClass().getSimpleName())
                 .errorCode(errorCode)
                 .errorMessage(errorMessage)
-                .httpStatus(e.getHttpStatus())
                 .build();
 
         return ResponseEntity
@@ -53,14 +52,14 @@ public class GlobalControllerAdvice {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<HumanResourceException> nestedObjectExceptionHandling(DataIntegrityViolationException exceptions) {
         log.error("Global Controller Advice - Data Integrity Violantion Exception");
-        return new ResponseEntity<HumanResourceException>(HumanResourceExceptionConstant.NESTED_OBJECT_EXCEPTION, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(HumanResourceExceptionConstant.NESTED_OBJECT_EXCEPTION);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object handleValidationExceptions(MethodArgumentNotValidException exceptions) {
         log.error("Global Controller Advice - Method Argument Not Valid Exception");
         Map<String, String> errors = new HashMap<>();
-       for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
+        for (FieldError fieldError : exceptions.getBindingResult().getFieldErrors()) {
             errors.put(fieldError.getField(), fieldError.getDefaultMessage());
         }
         return new HumanResourceException("HRP-1002", errors ,HttpStatus.BAD_REQUEST).getErrorMessage();

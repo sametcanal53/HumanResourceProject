@@ -16,11 +16,11 @@ public interface HumanResourceService {
     ResponseEntity<HumanResource> getHumanResourceById(Long id);
 
     // Create - Update - Delete
-    HumanResource createHumanResource(CreateHumanResourceRequest createHumanResourceRequest);
+    ResponseEntity<HumanResource>  createHumanResource(CreateHumanResourceRequest createHumanResourceRequest);
 
     ResponseEntity<HumanResource> updateHumanResource(UpdateHumanResourceRequest updateHumanResourceRequest);
 
-    Boolean deleteHumanResource(Long id);
+    Boolean  deleteHumanResource(Long id);
 
     // Employee Management
     ResponseEntity<?> changeEmployeeDayOff(ChangeDayOff changeDayOff);

@@ -10,5 +10,4 @@ public class ErrorResponse {
     private String errorType;
     private String errorCode;
     private String errorMessage;
-    private HttpStatus httpStatus;
 }

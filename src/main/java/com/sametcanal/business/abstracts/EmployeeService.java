@@ -15,7 +15,7 @@ public interface EmployeeService {
     ResponseEntity<Employee> getEmployeeById(Long id);
 
     // Create - Update - Delete
-    Employee createEmployee(CreateEmployeeRequest createEmployeeRequest);
+    ResponseEntity<Employee> createEmployee(CreateEmployeeRequest createEmployeeRequest);
 
     ResponseEntity<Employee> updateEmployee(UpdateEmployeeRequest updateEmployeeRequest);
 

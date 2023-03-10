@@ -33,7 +33,7 @@ public class EmployeeController {
 
     // Create - Update - Delete
     @PostMapping("/")
-    Employee createEmployee(@Valid @RequestBody CreateEmployeeRequest createEmployeeRequest){
+    ResponseEntity<Employee> createEmployee(@Valid @RequestBody CreateEmployeeRequest createEmployeeRequest){
         return this.employeeService.createEmployee(createEmployeeRequest);
     }
 

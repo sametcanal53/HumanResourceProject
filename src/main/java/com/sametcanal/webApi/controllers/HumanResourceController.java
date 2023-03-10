@@ -6,6 +6,7 @@ import com.sametcanal.business.requests.update.UpdateHumanResourceRequest;
 import com.sametcanal.entitites.concretes.HumanResource;
 import com.sametcanal.business.abstracts.HumanResourceService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class HumanResourceController {
 
     // Create - Update - Delete
     @PostMapping("/")
-    HumanResource createHumanResource(@RequestBody CreateHumanResourceRequest createHumanResourceRequest) {
+    ResponseEntity<HumanResource> createHumanResource(@RequestBody CreateHumanResourceRequest createHumanResourceRequest) {
         return this.humanResourceService.createHumanResource(createHumanResourceRequest);
     }
 

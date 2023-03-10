@@ -1,5 +1,6 @@
 package com.sametcanal.security.jwt.entities.concretes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sametcanal.security.jwt.entities.abstracts.ERole;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,6 +17,7 @@ import javax.persistence.*;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
 
     @Enumerated(EnumType.STRING)
