@@ -35,7 +35,7 @@ public class EmployeeManager implements EmployeeService {
     }
 
     @Override
-    public Employee createEmployee(CreateEmployeeRequest createEmployeeRequest) {
+    public ResponseEntity<Employee> createEmployee(CreateEmployeeRequest createEmployeeRequest) {
         Employee employee = Employee
                 .builder()
                 .name(createEmployeeRequest.getName())
@@ -44,7 +44,7 @@ public class EmployeeManager implements EmployeeService {
                 .humanResourceId(createEmployeeRequest.getHumanResourceId())
                 .build();
         log.info("Employee was successfully created.");
-        return this.employeeRepository.save(employee);
+        return ResponseEntity.ok().body(this.employeeRepository.save(employee));
     }
 
     @Override

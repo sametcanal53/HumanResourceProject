@@ -41,13 +41,13 @@ public class HumanResourceManager implements HumanResourceService {
     }
 
     @Override
-    public HumanResource createHumanResource(CreateHumanResourceRequest createHumanResourceRequest) {
+    public ResponseEntity<HumanResource> createHumanResource(CreateHumanResourceRequest createHumanResourceRequest) {
         HumanResource humanResource = HumanResource
                 .builder()
                 .humanResourceName(createHumanResourceRequest.getHumanResourceName())
                 .build();
         log.info("Human Resource was successfully created.");
-        return this.humanResourceRepository.save(humanResource);
+        return ResponseEntity.ok().body(this.humanResourceRepository.save(humanResource));
     }
 
     @Override
@@ -61,7 +61,7 @@ public class HumanResourceManager implements HumanResourceService {
     }
 
     @Override
-    public Boolean deleteHumanResource(Long id) {
+    public Boolean  deleteHumanResource(Long id) {
         this.humanResourceBusinessRoles.checkIfHumanResourceExists(id);
         log.info("Human Resource was successfully deleted.");
         this.humanResourceRepository.deleteById(id);

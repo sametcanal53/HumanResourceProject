@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Data
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class UserDetail implements UserDetails {
 
-    private Long id;
+    private UUID uuid;
     private String username;
     private String email;
     @JsonIgnore
@@ -32,7 +33,7 @@ public class UserDetail implements UserDetails {
                 .collect(Collectors.toList());
 
         return new UserDetail(
-                user.getId(),
+                UUID.randomUUID(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
@@ -42,24 +43,6 @@ public class UserDetail implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return username;
     }
 
     @Override
@@ -82,7 +65,7 @@ public class UserDetail implements UserDetails {
         return true;
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o)
             return true;
@@ -90,5 +73,5 @@ public class UserDetail implements UserDetails {
             return false;
         UserDetail user = (UserDetail) o;
         return Objects.equals(id, user.id);
-    }
+    }*/
 }
