@@ -36,6 +36,8 @@ public class EmployeeManager implements EmployeeService {
 
     @Override
     public ResponseEntity<Employee> createEmployee(CreateEmployeeRequest createEmployeeRequest) {
+        this.employeeBusinessRules.checkIfSalary(createEmployeeRequest.getSalary());
+
         Employee employee = Employee
                 .builder()
                 .name(createEmployeeRequest.getName())
@@ -48,13 +50,16 @@ public class EmployeeManager implements EmployeeService {
     }
 
     @Override
-    public ResponseEntity<Employee> updateEmployee(UpdateEmployeeRequest updateEmployeeRequest){
+    public ResponseEntity<Employee> updateEmployee(UpdateEmployeeRequest updateEmployeeRequest) {
         this.employeeBusinessRules.checkIfEmployeeExists(updateEmployeeRequest.getId());
+        this.employeeBusinessRules.checkIfSalary(updateEmployeeRequest.getSalary());
+
         Employee updateEmployee = employeeRepository.findById(updateEmployeeRequest.getId()).orElse(null);
         updateEmployee.setName(updateEmployeeRequest.getName());
         updateEmployee.setSalary(updateEmployeeRequest.getSalary());
         updateEmployee.setDayOff(updateEmployeeRequest.getDayOff());
         updateEmployee.setHumanResourceId(updateEmployeeRequest.getHumanResourceId());
+
         log.info("Employee was successfully updated.");
         this.employeeRepository.save(updateEmployee);
         return ResponseEntity.ok().body(updateEmployee);

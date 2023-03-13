@@ -2,7 +2,7 @@ package com.sametcanal.entitites.abstracts;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","humanResource"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "humanResource"})
 public enum DayOff {
-    MONDAY , TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
 }

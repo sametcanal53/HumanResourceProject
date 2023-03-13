@@ -73,7 +73,6 @@ public class UserManager implements UserService {
     public ResponseEntity<JwtResponse> authenticateUser(SignInRequest signInRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
 
@@ -95,7 +94,7 @@ public class UserManager implements UserService {
         return true;
     }
 
-    public Set<Role> roleConfig(Set<String> inputRoles){
+    public Set<Role> roleConfig(Set<String> inputRoles) {
         Set<Role> roles = new HashSet<>();
         inputRoles.forEach(role -> {
             switch (role) {

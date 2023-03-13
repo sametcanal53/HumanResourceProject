@@ -14,10 +14,17 @@ public class EmployeeBusinessRules {
     private final EmployeeRepository employeeRepository;
 
 
-    public void checkIfEmployeeExists(Long id){
+    public void checkIfEmployeeExists(Long id) {
         if (!this.employeeRepository.existsById(id)) {
             log.error("Employee Not Found! ");
             throw HumanResourceExceptionConstant.EMPLOYEE_NOT_FOUND;
         }
     }
+
+    public void checkIfSalary(double salary){
+        if(salary<1000){
+            throw HumanResourceExceptionConstant.SALARY_VALIDATION_ERROR;
+        }
+    }
+
 }

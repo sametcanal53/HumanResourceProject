@@ -14,7 +14,7 @@ import javax.validation.constraints.Min;
 @Builder
 public class EmployeeRequest {
     private String name;
-    @Min(value = 0,message = "The value you entered cannot be less than 0.")
+    @Min(value = 0, message = "The value you entered cannot be less than 0.")
     private double salary;
     private DayOff dayOff;
     private Long humanResourceId;

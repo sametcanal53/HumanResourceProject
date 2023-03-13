@@ -1,6 +1,7 @@
 package com.sametcanal.business.abstracts;
 
 import com.sametcanal.business.requests.ChangeDayOff;
+import com.sametcanal.business.requests.ChangeSalary;
 import com.sametcanal.business.requests.create.CreateHumanResourceRequest;
 import com.sametcanal.business.requests.update.UpdateHumanResourceRequest;
 import com.sametcanal.entitites.concretes.HumanResource;
@@ -16,13 +17,15 @@ public interface HumanResourceService {
     ResponseEntity<HumanResource> getHumanResourceById(Long id);
 
     // Create - Update - Delete
-    ResponseEntity<HumanResource>  createHumanResource(CreateHumanResourceRequest createHumanResourceRequest);
+    ResponseEntity<HumanResource> createHumanResource(CreateHumanResourceRequest createHumanResourceRequest);
 
     ResponseEntity<HumanResource> updateHumanResource(UpdateHumanResourceRequest updateHumanResourceRequest);
 
-    Boolean  deleteHumanResource(Long id);
+    Boolean deleteHumanResource(Long id);
 
     // Employee Management
     ResponseEntity<?> changeEmployeeDayOff(ChangeDayOff changeDayOff);
-    
+
+    ResponseEntity<?> changeEmployeeSalary(ChangeSalary changeSalary);
+
 }

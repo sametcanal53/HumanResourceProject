@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "employees")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler","humanResource","humanResourceId"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "humanResource", "humanResourceId"})
 public class Employee extends BaseEntity {
 
     @Column(name = "name")
@@ -24,13 +24,13 @@ public class Employee extends BaseEntity {
     @Column(name = "salary")
     private double salary;
 
-    @JoinColumn(name = "day_off",insertable = false,updatable = false)
+    @JoinColumn(name = "day_off", insertable = false, updatable = false)
     private DayOff dayOff;
 
     @Column(name = "human_resource")
     private Long humanResourceId;
 
     @ManyToOne()
-    @JoinColumn(name = "human_resource",insertable = false,updatable = false)
+    @JoinColumn(name = "human_resource", insertable = false, updatable = false)
     private HumanResource humanResource;
 }

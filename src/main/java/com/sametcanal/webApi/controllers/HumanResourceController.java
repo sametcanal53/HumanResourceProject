@@ -1,6 +1,7 @@
 package com.sametcanal.webApi.controllers;
 
 import com.sametcanal.business.requests.ChangeDayOff;
+import com.sametcanal.business.requests.ChangeSalary;
 import com.sametcanal.business.requests.create.CreateHumanResourceRequest;
 import com.sametcanal.business.requests.update.UpdateHumanResourceRequest;
 import com.sametcanal.entitites.concretes.HumanResource;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -53,5 +55,11 @@ public class HumanResourceController {
     @PreAuthorize("hasAnyRole('HUMAN_RESOURCE','ADMIN')")
     public ResponseEntity<?> changeEmployeeDayOff(@RequestBody ChangeDayOff changeDayOff) {
         return this.humanResourceService.changeEmployeeDayOff(changeDayOff);
+    }
+
+    @PostMapping("/changeEmployeeSalary")
+    @PreAuthorize("hasAnyRole('HUMAN_RESOURCE','ADMIN')")
+    public ResponseEntity<?> changeEmployeeSalary(@RequestBody ChangeSalary changeSalary) {
+        return this.humanResourceService.changeEmployeeSalary(changeSalary);
     }
 }

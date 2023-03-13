@@ -1,6 +1,7 @@
 package com.sametcanal.business.concretes;
 
 import com.sametcanal.business.requests.ChangeDayOff;
+import com.sametcanal.business.requests.ChangeSalary;
 import com.sametcanal.business.requests.create.CreateHumanResourceRequest;
 import com.sametcanal.business.requests.update.UpdateHumanResourceRequest;
 import com.sametcanal.business.rules.EmployeeBusinessRules;
@@ -42,6 +43,8 @@ public class HumanResourceManager implements HumanResourceService {
 
     @Override
     public ResponseEntity<HumanResource> createHumanResource(CreateHumanResourceRequest createHumanResourceRequest) {
+        this.humanResourceBusinessRoles.checkIfHumanResourceNameExists(createHumanResourceRequest.getHumanResourceName());
+
         HumanResource humanResource = HumanResource
                 .builder()
                 .humanResourceName(createHumanResourceRequest.getHumanResourceName())
@@ -52,7 +55,9 @@ public class HumanResourceManager implements HumanResourceService {
 
     @Override
     public ResponseEntity<HumanResource> updateHumanResource(UpdateHumanResourceRequest updateHumanResourceRequest) {
+        this.humanResourceBusinessRoles.checkIfHumanResourceNameExists(updateHumanResourceRequest.getHumanResourceName());
         this.humanResourceBusinessRoles.checkIfHumanResourceExists(updateHumanResourceRequest.getId());
+
         HumanResource updateHumanResource = humanResourceRepository.findById(updateHumanResourceRequest.getId()).orElse(null);
         updateHumanResource.setHumanResourceName(updateHumanResourceRequest.getHumanResourceName());
         log.info("Human Resource was successfully updated.");
@@ -61,7 +66,7 @@ public class HumanResourceManager implements HumanResourceService {
     }
 
     @Override
-    public Boolean  deleteHumanResource(Long id) {
+    public Boolean deleteHumanResource(Long id) {
         this.humanResourceBusinessRoles.checkIfHumanResourceExists(id);
         log.info("Human Resource was successfully deleted.");
         this.humanResourceRepository.deleteById(id);
@@ -76,8 +81,24 @@ public class HumanResourceManager implements HumanResourceService {
         Employee employee = this.employeeRepository.findById(changeDayOff.getEmployeeId()).orElse(null);
         HumanResource humanResource = this.humanResourceRepository.findById(changeDayOff.getHumanResourceId()).orElse(null);
 
-        this.humanResourceBusinessRoles.checkIfEmployeeAndHumanResourceMatch(humanResource,employee,changeDayOff);
+        this.humanResourceBusinessRoles.checkIfEmployeeAndHumanResourceMatch(humanResource, employee, changeDayOff);
         this.employeeRepository.save(employee);
-        return ResponseEntity.ok().body(employee.getName()+"'s day off has been changed to "+changeDayOff.getDayOff().name());
+        log.info(employee.getName() + "'s day off has been changed to " + changeDayOff.getDayOff().name());
+        return ResponseEntity.ok().body(employee.getName() + "'s day off has been changed to " + changeDayOff.getDayOff().name());
+    }
+
+    @Override
+    public ResponseEntity<?> changeEmployeeSalary(ChangeSalary changeSalary) {
+        this.employeeBusinessRules.checkIfEmployeeExists(changeSalary.getEmployeeId());
+        this.humanResourceBusinessRoles.checkIfHumanResourceExists(changeSalary.getHumanResourceId());
+        this.employeeBusinessRules.checkIfSalary(changeSalary.getSalary());
+
+        Employee employee = this.employeeRepository.findById(changeSalary.getEmployeeId()).orElse(null);
+        HumanResource humanResource = this.humanResourceRepository.findById(changeSalary.getHumanResourceId()).orElse(null);
+
+        this.humanResourceBusinessRoles.checkIfEmployeeAndHumanResourceMatch(humanResource, employee, changeSalary);
+        this.employeeRepository.save(employee);
+        log.info(employee.getName() + "'s salary has been changed to " + changeSalary.getSalary());
+        return ResponseEntity.ok().body(employee.getName() + "'s salary has been changed to " + changeSalary.getSalary());
     }
 }

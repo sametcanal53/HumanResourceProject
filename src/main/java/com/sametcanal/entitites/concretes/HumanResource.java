@@ -22,6 +22,6 @@ public class HumanResource extends BaseEntity {
     @Column(name = "human_resource_name")
     private String humanResourceName;
 
-    @OneToMany(mappedBy = "humanResource",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "humanResource", cascade = CascadeType.ALL)
     private List<Employee> employees;
 }

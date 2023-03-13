@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.validation.Valid;
 import java.util.List;
 
-public interface UserService{
+public interface UserService {
     // User
     // List - Find By ID
     List<User> getUsers();
@@ -23,6 +23,6 @@ public interface UserService{
     ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody SignInRequest signInRequest);
 
     // Delete
-    
+
     Boolean deleteUser(Long id);
 }
